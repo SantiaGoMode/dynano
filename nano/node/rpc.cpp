@@ -2118,7 +2118,7 @@ void nano::rpc_handler::ledger ()
 	response_errors ();
 }
 
-void nano::rpc_handler::mnano_from_raw (nano::uint128_t ratio)
+void nano::rpc_handler::mDyna_from_raw (nano::uint128_t ratio)
 {
 	auto amount (amount_impl ());
 	if (!ec)
@@ -2129,7 +2129,7 @@ void nano::rpc_handler::mnano_from_raw (nano::uint128_t ratio)
 	response_errors ();
 }
 
-void nano::rpc_handler::mnano_to_raw (nano::uint128_t ratio)
+void nano::rpc_handler::mDyna_to_raw (nano::uint128_t ratio)
 {
 	auto amount (amount_impl ());
 	if (!ec)
@@ -3327,11 +3327,11 @@ void nano::rpc_handler::version ()
 	response_l.put ("protocol_version", std::to_string (nano::protocol_version));
 	if (NANO_VERSION_PATCH == 0)
 	{
-		response_l.put ("node_vendor", boost::str (boost::format ("Nano %1%") % NANO_MAJOR_MINOR_VERSION));
+		response_l.put ("node_vendor", boost::str (boost::format ("Dynano %1%") % NANO_MAJOR_MINOR_VERSION));
 	}
 	else
 	{
-		response_l.put ("node_vendor", boost::str (boost::format ("Nano %1%") % NANO_MAJOR_MINOR_RC_VERSION));
+		response_l.put ("node_vendor", boost::str (boost::format ("Dynano %1%") % NANO_MAJOR_MINOR_RC_VERSION));
 	}
 	response_errors ();
 }
@@ -4459,25 +4459,25 @@ void nano::rpc_handler::process_request ()
 			{
 				key_expand ();
 			}
-			else if (action == "knano_from_raw" || action == "krai_from_raw")
+			else if (action == "kDyna_from_raw" || action == "kd_from_raw")
 			{
-				mnano_from_raw (nano::kxrb_ratio);
+				mDyna_from_raw (nano::kDyna_ratio);
 			}
-			else if (action == "knano_to_raw" || action == "krai_to_raw")
+			else if (action == "kDyna_to_raw" || action == "kd_to_raw")
 			{
-				mnano_to_raw (nano::kxrb_ratio);
+				mDyna_to_raw (nano::kDyna_ratio);
 			}
 			else if (action == "ledger")
 			{
 				ledger ();
 			}
-			else if (action == "mnano_from_raw" || action == "mrai_from_raw")
+			else if (action == "mDyna_from_raw" || action == "md_from_raw")
 			{
-				mnano_from_raw ();
+				mDyna_from_raw ();
 			}
-			else if (action == "mnano_to_raw" || action == "mrai_to_raw")
+			else if (action == "mDyna_to_raw" || action == "md_to_raw")
 			{
-				mnano_to_raw ();
+				mDyna_to_raw ();
 			}
 			else if (action == "node_id")
 			{
@@ -4531,13 +4531,13 @@ void nano::rpc_handler::process_request ()
 			{
 				process ();
 			}
-			else if (action == "nano_from_raw" || action == "rai_from_raw")
+			else if (action == "dyna_from_raw" || action == "d_from_raw")
 			{
-				mnano_from_raw (nano::xrb_ratio);
+				mDyna_from_raw (nano::dyna_ratio);
 			}
-			else if (action == "nano_to_raw" || action == "rai_to_raw")
+			else if (action == "dyna_to_raw" || action == "d_to_raw")
 			{
-				mnano_to_raw (nano::xrb_ratio);
+				mDyna_to_raw (nano::dyna_ratio);
 			}
 			else if (action == "receive")
 			{

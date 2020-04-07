@@ -8,8 +8,8 @@ namespace
 {
 const char * preconfigured_peers_key = "preconfigured_peers";
 const char * signature_checker_threads_key = "signature_checker_threads";
-const char * default_beta_peer_network = "peering-beta.nano.org";
-const char * default_live_peer_network = "peering.nano.org";
+const char * default_beta_peer_network = "peering-beta.dynano.org";
+const char * default_live_peer_network = "peering.dynano.org";
 }
 
 nano::node_config::node_config () :
@@ -21,9 +21,9 @@ nano::node_config::node_config (uint16_t peering_port_a, nano::logging const & l
 peering_port (peering_port_a),
 logging (logging_a),
 bootstrap_fraction_numerator (1),
-receive_minimum (nano::xrb_ratio),
-vote_minimum (nano::Gxrb_ratio),
-online_weight_minimum (60000 * nano::Gxrb_ratio),
+receive_minimum (nano::dyna_ratio),
+vote_minimum (nano::gDyna_ratio),
+online_weight_minimum (60000 * nano::gDyna_ratio),
 online_weight_quorum (50),
 password_fanout (1024),
 io_threads (std::max<unsigned> (4, boost::thread::hardware_concurrency ())),
@@ -58,14 +58,9 @@ unchecked_cutoff_time (std::chrono::seconds (4 * 60 * 60)) // 4 hours
 			break;
 		case nano::nano_networks::nano_live_network:
 			preconfigured_peers.push_back (default_live_peer_network);
-			preconfigured_representatives.emplace_back ("A30E0A32ED41C8607AA9212843392E853FCBCB4E7CB194E35C94F07F91DE59EF");
-			preconfigured_representatives.emplace_back ("67556D31DDFC2A440BF6147501449B4CB9572278D034EE686A6BEE29851681DF");
-			preconfigured_representatives.emplace_back ("5C2FBB148E006A8E8BA7A75DD86C9FE00C83F5FFDBFD76EAA09531071436B6AF");
-			preconfigured_representatives.emplace_back ("AE7AC63990DAAAF2A69BF11C913B928844BF5012355456F2F164166464024B29");
-			preconfigured_representatives.emplace_back ("BD6267D6ECD8038327D2BCC0850BDF8F56EC0414912207E81BCF90DFAC8A4AAA");
-			preconfigured_representatives.emplace_back ("2399A083C600AA0572F5E36247D978FCFC840405F8D4B6D33161C0066A55F431");
-			preconfigured_representatives.emplace_back ("2298FAB7C61058E77EA554CB93EDEEDA0692CBFCC540AB213B2836B29029E23A");
-			preconfigured_representatives.emplace_back ("3FE80B4BC842E82C1C18ABFEEC47EA989E63953BC82AC411F304D13833D52A56");
+			preconfigured_representatives.emplace_back ("E009DC1BB1BB2E483C7F1BF16EA67F863FA102CAE87655B13EE9FD0D22414448");
+			preconfigured_representatives.emplace_back ("368A337E87C7361BEAEF7F163769B37C8577F55E49BD6D5AC14CE2F704072965");
+			preconfigured_representatives.emplace_back ("B8A43BF7030749F76CEA5C9F5BB435598F9E7ACB9622560B43AD76B686258531");
 			break;
 		default:
 			assert (false);
@@ -159,11 +154,11 @@ bool nano::node_config::upgrade_json (unsigned version_a, nano::jsonconfig & jso
 		}
 		case 3:
 			json.erase ("receive_minimum");
-			json.put ("receive_minimum", nano::xrb_ratio.convert_to<std::string> ());
+			json.put ("receive_minimum", nano::dyna_ratio.convert_to<std::string> ());
 			upgraded = true;
 		case 4:
 			json.erase ("receive_minimum");
-			json.put ("receive_minimum", nano::xrb_ratio.convert_to<std::string> ());
+			json.put ("receive_minimum", nano::dyna_ratio.convert_to<std::string> ());
 			upgraded = true;
 		case 5:
 			json.put ("enable_voting", enable_voting);
@@ -221,11 +216,11 @@ bool nano::node_config::upgrade_json (unsigned version_a, nano::jsonconfig & jso
 			auto peers_l (json.get_required_child (preconfigured_peers_key));
 			nano::jsonconfig peers;
 			peers_l.array_entries<std::string> ([&peers](std::string entry) {
-				if (entry == "rai-beta.raiblocks.net")
+				if (entry == "peering-beta.dynano.net")
 				{
 					entry = default_beta_peer_network;
 				}
-				else if (entry == "rai.raiblocks.net")
+				else if (entry == "peering.dynano.net")
 				{
 					entry = default_live_peer_network;
 				}
